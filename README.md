@@ -54,6 +54,7 @@ git clone https://github.com/themesmith/core.git
 cd core
 npm install
 npm run dev
+```
 
 #themesmith #theme-builder #ai #gpt #ghost #wordpress #openai #webdev #cms
 
