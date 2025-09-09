@@ -36,6 +36,7 @@ export const buildThemeFromSpec = async (spec) => {
   await ensureDir(path.join(themePath, 'assets', 'css'));
   await ensureDir(path.join(themePath, 'partials'));
   await ensureDir(path.join(themePath, 'assets', 'images'));
+  await ensureDir(path.join(themePath, 'assets', 'js'));
 
   const themePkg = {
     name: slug,
@@ -70,6 +71,7 @@ header, footer { padding: 16px; }
     {{> "header"}}
     <main class="container">{{{body}}}</main>
     {{> "footer"}}
+    <script src="assets/js/main.js"></script>
   </body>
   </html>`;
 
@@ -115,8 +117,18 @@ header, footer { padding: 16px; }
 
   const pageHbs = `{{!< default}}
 <article>
+  {{#if feature_image}}
+    <figure>
+      <img src="{{feature_image}}" alt="{{title}}" />
+    </figure>
+  {{/if}}
   <h1>{{title}}</h1>
-  <section>{{content}}</section>
+  {{#if custom_excerpt}}
+    <p><em>{{custom_excerpt}}</em></p>
+  {{/if}}
+  <section>
+    {{content}}
+  </section>
 </article>`;
 
   const tagHbs = `{{!< default}}
@@ -178,6 +190,7 @@ This theme was generated from a structured themeSpec.json. Assets use relative l
   await fs.writeFile(path.join(themePath, 'partials', 'header.hbs'), `${headerHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'partials', 'footer.hbs'), `${footerHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'assets', 'css', 'screen.css'), `${css}\n`, 'utf8');
+  await fs.writeFile(path.join(themePath, 'assets', 'js', 'main.js'), "document.addEventListener('DOMContentLoaded',()=>{console.log('ThemeSmith theme loaded');});\n", 'utf8');
   await fs.writeFile(path.join(themePath, 'README.md'), `${themeReadme}\n`, 'utf8');
 
   return themePath;
