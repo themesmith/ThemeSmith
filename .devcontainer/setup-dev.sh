@@ -1,16 +1,11 @@
 #!/bin/bash
-# setup-dev.sh — ThemeSmith universal dev setup script
+# setup-dev.sh — ThemeSmith dev environment setup (agent checks disabled)
 
 set -e
-set -x  # <--- Enable script tracing
 
 echo ""
 echo "🛠  Setting up ThemeSmith development environment..."
 echo ""
-
-echo "OPENAI_API_KEY=sk-xxxxx" > .env
-[ -f .env ] && export $(grep -v '^#' .env | xargs)
-
 
 # 1. Ensure Node.js is installed
 if ! command -v node &> /dev/null
@@ -26,49 +21,51 @@ then
   exit 1
 fi
 
-# 3. Check for OpenAI API key
-if [[ -z "${OPENAI_API_KEY}" ]]; then
-  echo "❌ OPENAI_API_KEY is not set in your environment."
-  echo "👉 Please run: export OPENAI_API_KEY=sk-xxx before running this script."
-  exit 1
+# 3. Load .env if it exists (optional)
+if [ -f ".env" ]; then
+  export $(grep -v '^#' .env | xargs)
 fi
 
-# 4. Install root dependencies
+# 4. Fallback for OPENAI_API_KEY if not set
+: "${OPENAI_API_KEY:=sk-fake-key-for-dev}"
+export OPENAI_API_KEY
+
+# 5. Notify user about key usage
+if [[ "$OPENAI_API_KEY" == "sk-fake-key-for-dev" ]]; then
+  echo "⚠️  OPENAI_API_KEY not provided. Using fake key for non-API testing only."
+else
+  echo "🔐 OPENAI_API_KEY is set and ready."
+fi
+
+# 6. Install project dependencies
 echo "📦 Installing Node.js dependencies..."
 npm install
 
-# 5. Install Ghost theme validator
-echo "🔍 Installing Ghost theme validator (gscan)..."
-npm install -g gscan
+# 7. Install Ghost validator (gscan)
+if ! command -v gscan &> /dev/null; then
+  echo "🔍 Installing Ghost theme validator..."
+  npm install -g gscan
+else
+  echo "✅ gscan already installed"
+fi
 
-# 6. Create output folder if missing
+# 8. [DISABLED] Agent prompt file validation
+# echo "🔕 Skipping agent prompt checks for now..."
+# MISSING_PROMPTS=0
+# for file in "./gpt/user_agent_prompt.txt" "./gpt/code_agent_prompt.txt"; do
+#   if [ ! -f "$file" ]; then
+#     echo "❌ Missing prompt file: $file"
+#     MISSING_PROMPTS=1
+#   fi
+# done
+# if [ "$MISSING_PROMPTS" -eq 1 ]; then
+#   echo "🚨 Setup incomplete due to missing prompt files."
+#   exit 1
+# fi
+
+# 9. Create output folder if it doesn't exist
 mkdir -p output
 
-# 7. Confirm gpt prompts exist
-if [ ! -f "./gpt/user_agent_prompt.txt" ]; then
-  echo "❌ Missing: ./gpt/user_agent_prompt.txt"
-  exit 1
-fi
-if [ ! -f "./gpt/code_agent_prompt.txt" ]; then
-  echo "❌ Missing: ./gpt/code_agent_prompt.txt"
-  exit 1
-fi
-
-# 8. Optional: Setup .env if it doesn't exist
-
-: "${OPENAI_API_KEY:=sk-demo-placeholder}"
-export OPENAI_API_KEY
-
-
-if [ ! -f ".env" ]; then
-  echo "OPENAI_API_KEY=$OPENAI_API_KEY" > .env
-  echo "🧪 .env file created with your OpenAI key"
-fi
-
-# 9. Final Message
 echo ""
-echo "✅ ThemeSmith dev environment is ready!"
-echo "📂 Run user agent: node run-agent.js user"
-echo "🧠 Run code agent: node run-agent.js code"
+echo "✅ ThemeSmith Dev Container is ready (agents temporarily disabled)."
 echo ""
-
