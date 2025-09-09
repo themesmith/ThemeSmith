@@ -4,8 +4,8 @@ import path from 'path';
 import fs from 'fs/promises';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
-import { buildThemeFromSpec } from '../core/theme-builder.js';
 import archiver from 'archiver';
+import buildTheme from './routes/generate.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,32 +16,27 @@ app.use(cors({ origin: allowedOrigin === '*' ? undefined : allowedOrigin }));
 app.use(express.json({ limit: '2mb' }));
 app.use('/output', express.static(path.resolve('output')));
 
-const readSpecFromDisk = async () => {
-  const p = path.resolve(__dirname, '..', 'themeSpec.json');
-  const json = await fs.readFile(p, 'utf8');
-  return JSON.parse(json);
-};
-
-app.post('/generate-theme', async (req, res) => {
+// Build → validate → zip pipeline using middleware chain
+app.post('/generate-theme', buildTheme, async (req, res) => {
+  const spec = res.locals.spec;
+  const themePath = res.locals.themePath;
   try {
-    const spec = Object.keys(req.body || {}).length ? req.body : await readSpecFromDisk();
-    const themePath = await buildThemeFromSpec(spec);
-
-    // Run Ghost validator via npx (installed on-demand)
     const validatorCmd = `npx --yes gscan "${themePath}"`;
     exec(validatorCmd, { maxBuffer: 1024 * 1024 }, async (err, stdout, stderr) => {
       const slug = path.basename(themePath);
       const outRoot = path.resolve('output');
       const zipPath = path.join(outRoot, `${slug}.zip`);
       const reportPath = path.join(outRoot, `${slug}-report.md`);
-      // Zip using archiver for portability
+
       const summary = err ? stderr || stdout : stdout;
       const report = `# ThemeSmith Report\n\n- Theme: ${spec.projectName} (${slug})\n- Platform: ${spec.platform}\n- Output: ${themePath}\n- Zip: ${zipPath}\n\n## Validator Output (gscan)\n\n\n${summary}\n`;
       await fs.writeFile(reportPath, `${report}\n`, 'utf8');
 
       try {
         await new Promise((resolve, reject) => {
-          const output = (await import('fs')).createWriteStream(zipPath);
+          // eslint-disable-next-line global-require
+          const nodefs = require('fs');
+          const output = nodefs.createWriteStream(zipPath);
           const archive = archiver('zip', { zlib: { level: 9 } });
           output.on('close', resolve);
           archive.on('error', reject);
