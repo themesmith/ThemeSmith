@@ -1,5 +1,6 @@
 import archiver from 'archiver';
 import path from 'path';
+import fs from 'fs';
 
 const zipTheme = async (req, res, next) => {
   try {
@@ -11,8 +12,6 @@ const zipTheme = async (req, res, next) => {
     const zipPath = path.join(outRoot, `${slug}.zip`);
 
     await new Promise((resolve, reject) => {
-      // eslint-disable-next-line global-require
-      const fs = require('fs');
       const output = fs.createWriteStream(zipPath);
       const archive = archiver('zip', { zlib: { level: 9 } });
       output.on('close', resolve);
@@ -30,4 +29,3 @@ const zipTheme = async (req, res, next) => {
 };
 
 export default zipTheme;
-
