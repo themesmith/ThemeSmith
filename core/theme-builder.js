@@ -57,6 +57,11 @@ a { color: var(--color-accent); text-decoration: none; }
 header, footer { padding: 16px; }
 .container { max-width: 960px; margin: 0 auto; padding: 16px; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+/* Dark mode overrides */
+.dark {
+  --color-bg: #111111;
+  --color-text: #eaeaea;
+}
 `;
 
   const defaultHbs = `<!DOCTYPE html>
@@ -87,6 +92,7 @@ header, footer { padding: 16px; }
       </ul>
     </nav>
     {{/if}}
+    ${Array.isArray(spec.features) && spec.features.includes('dark_mode') ? '<button id="dark-mode-toggle" style="float:right">Toggle Dark</button>' : ''}
   </div>
 </header>`;
 
@@ -190,7 +196,31 @@ This theme was generated from a structured themeSpec.json. Assets use relative l
   await fs.writeFile(path.join(themePath, 'partials', 'header.hbs'), `${headerHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'partials', 'footer.hbs'), `${footerHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'assets', 'css', 'screen.css'), `${css}\n`, 'utf8');
-  await fs.writeFile(path.join(themePath, 'assets', 'js', 'main.js'), "document.addEventListener('DOMContentLoaded',()=>{console.log('ThemeSmith theme loaded');});\n", 'utf8');
+  const mainJs = (() => {
+    const lines = [
+      "document.addEventListener('DOMContentLoaded',()=>{",
+      "  console.log('ThemeSmith theme loaded');",
+    ];
+    if (Array.isArray(spec.features) && spec.features.includes('dark_mode')) {
+      lines.push(
+        "  const root=document.documentElement;",
+        "  const key='ts_dark';",
+        "  const btn=document.getElementById('dark-mode-toggle');",
+        "  const apply=(on)=>{on?root.classList.add('dark'):root.classList.remove('dark');",
+        "    if(btn) btn.textContent=on?'Light Mode':'Dark Mode';};",
+        "  let pref=localStorage.getItem(key);",
+        "  if(pref===null){pref=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'1':'0';}",
+        "  const enabled=pref==='1';",
+        "  apply(enabled);",
+        "  if(btn){btn.addEventListener('click',()=>{const cur=document.documentElement.classList.contains('dark');",
+        "    const next=!cur; apply(next); localStorage.setItem(key,next?'1':'0');});}",
+      );
+    }
+    lines.push("});");
+    return lines.join('\n') + '\n';
+  })();
+
+  await fs.writeFile(path.join(themePath, 'assets', 'js', 'main.js'), mainJs, 'utf8');
   await fs.writeFile(path.join(themePath, 'README.md'), `${themeReadme}\n`, 'utf8');
 
   return themePath;
