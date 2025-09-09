@@ -8,10 +8,24 @@
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major"
+    "release:major": "standard-version --release-as major",
+    "format": "npm --prefix frontend run format",
+    "lint:api": "npm --prefix api run lint",
+    "validate:ghost": "npx gscan"
   },
   "devDependencies": {
     "conventional-changelog-cli": "^4.1.0",
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "gscan": "^5.1.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+  "lint-staged": {
+    "api/**/*.js": [
+      "npm --prefix api run lint -- --fix"
+    ],
+    "frontend/**/*.{js,jsx,css}": [
+      "npm --prefix frontend run format"
+    ]
   }
 }
