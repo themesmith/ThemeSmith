@@ -14,6 +14,12 @@ const promptPath = path.join('gpt', promptFile);
 const specPath = path.join('themeSpec.json');
 
 const runAgent = async () => {
+  if (!fs.existsSync(promptPath)) {
+    throw new Error(`Missing prompt file: ${promptPath}`);
+  }
+  if (!fs.existsSync(specPath)) {
+    throw new Error(`Missing theme spec: ${specPath}`);
+  }
   const prompt = fs.readFileSync(promptPath, 'utf-8');
   const spec = fs.readFileSync(specPath, 'utf-8');
 

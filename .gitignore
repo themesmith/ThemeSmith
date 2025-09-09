@@ -1,0 +1,10 @@
+node_modules/
+output/
+*.zip
+.env
+.DS_Store
+coverage/
+frontend/.next/
+frontend/.vercel/
+frontend/out/
+api/.cache/

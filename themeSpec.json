@@ -1,0 +1,37 @@
+{
+  "platform": "ghost",
+  "projectName": "Clean Grid Blog",
+  "layout": {
+    "homepage": "grid",
+    "postPage": "single-column",
+    "tagPage": "minimal"
+  },
+  "colors": {
+    "primary": "#1a1a1a",
+    "accent": "#ff5722",
+    "background": "#ffffff",
+    "text": "#333333"
+  },
+  "fonts": {
+    "heading": "Inter",
+    "body": "Open Sans"
+  },
+  "features": [
+    "dark_mode",
+    "newsletter_signup",
+    "search",
+    "featured_posts"
+  ],
+  "navigation": {
+    "style": "top-bar",
+    "links": [
+      { "label": "Home", "url": "/" },
+      { "label": "About", "url": "/about" },
+      { "label": "Blog", "url": "/blog" }
+    ]
+  },
+  "exampleSites": [
+    "https://framer.com",
+    "https://vercel.com"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "env": { "node": true, "es2022": true },
+  "extends": ["airbnb-base"],
+  "parserOptions": { "ecmaVersion": 2022, "sourceType": "module" },
+  "rules": {
+    "max-len": ["error", { "code": 100 }],
+    "semi": ["error", "always"],
+    "no-console": "off"
+  }
+}
