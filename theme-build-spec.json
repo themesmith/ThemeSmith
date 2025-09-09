@@ -1,0 +1,104 @@
+{
+  "name": "ThemeSmith",
+  "description": "AI-powered theme builder for Ghost, WordPress, and other CMS platforms. Allows users to visually and programmatically create, preview, validate, and export modern themes.",
+  "targetUsers": [
+    "Indie developers",
+    "Theme designers",
+    "Agencies",
+    "Content creators",
+    "Theme marketplace vendors"
+  ],
+  "features": {
+    "mvp": [
+      "Visual + code theme builder interface",
+      "Live theme preview with mock content",
+      "Ghost theme validator (gscan)",
+      "Export to GitHub or zip package",
+      "ThemeSpec JSON generator"
+    ],
+    "niceToHaves": [
+      "AI image generation for headers",
+      "UI presets and prebuilt layouts",
+      "Marketplace integration",
+      "Live AI pair-agent mode"
+    ]
+  },
+  "techStack": {
+    "runtime": "Node.js v20.19.4",
+    "frontend": "React 18 with Next.js 14",
+    "backend": "Express.js",
+    "styling": "Tailwind CSS",
+    "database": "None (JSON-based for MVP), PostgreSQL optional",
+    "devEnv": "OpenAI Codex DevContainer (universal)",
+    "tools": ["gscan", "OpenAI API", "zip", "Git CLI"]
+  },
+  "auth": {
+    "strategy": "None for MVP",
+    "optional": "GitHub OAuth for pushing themes",
+    "roles": ["Anonymous", "GitHub-authenticated"]
+  },
+  "dataModel": {
+    "entities": [
+      "ThemeSpec",
+      "User (optional)",
+      "Asset (header images, icons)"
+    ],
+    "relationships": {
+      "User-ThemeSpec": "One-to-many",
+      "ThemeSpec-Asset": "One-to-many"
+    },
+    "security": {
+      "pii": false,
+      "oauthStorage": "Session-only"
+    }
+  },
+  "integrations": {
+    "github": "Export themes to repos",
+    "ghost": "Validate .zip themes via gscan",
+    "openai": "Generate images and prompts",
+    "cdn": "Optional S3 or Vercel static"
+  },
+  "ui": {
+    "designSystem": "Tailwind CSS",
+    "componentUI": "Radix UI (optional)",
+    "theme": "Light/Dark toggle",
+    "branding": {
+      "name": "ThemeSmith",
+      "visualStyle": "Smithy/metalsmith + modern UI"
+    }
+  },
+  "deployment": {
+    "previewTarget": "Vercel (Next.js frontend)",
+    "backend": "Vercel functions or Render",
+    "ciCd": "GitHub Actions",
+    "domains": ["themesmith.vercel.app", "themesmith.dev (future)"]
+  },
+  "env": {
+    "vars": ["OPENAI_API_KEY", "GITHUB_TOKEN", "BASE_URL"],
+    "secrets": "GitHub Secrets and .env.local",
+    "staging": "Vercel preview builds",
+    "production": "Main branch → deploy"
+  },
+  "repo": {
+    "path": "/workspace/ThemeSmith",
+    "remote": "themesmith/ThemeSmith",
+    "pushEnabled": true
+  },
+  "seedData": {
+    "users": ["demo@themesmith.dev"],
+    "themes": ["sample.json", "ghost-compatible starter"],
+    "assets": ["ai-header.jpg", "icon.svg"],
+    "mockPosts": ["hello-world", "design-inspiration"]
+  },
+  "acceptance": {
+    "functionality": [
+      "App builds without errors locally and on Vercel",
+      "Theme passes gscan validation",
+      "GitHub export completes with valid structure",
+      "Preview renders correctly with theme data"
+    ],
+    "ui": "Responsive, modern, accessible",
+    "performance": "Fast load, minimal latency",
+    "delivery": "MVP in 7–10 days"
+  }
+}

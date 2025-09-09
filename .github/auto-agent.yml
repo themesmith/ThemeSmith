@@ -1,0 +1,38 @@
+# .github/workflows/auto-agent.yml
+
+name: Auto Agent App Build
+
+on:
+  push:
+    branches: [ "dev-autogen" ]
+  workflow_dispatch:
+
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run App Builder Agent
+        run: |
+          echo "Running AI agent from agent_full_build_prompt.txt"
+          # Simulated - in real use, this would trigger the agent process
+          cat agent_full_build_prompt.txt
+
+      - name: Commit Changes
+        run: |
+          git config user.name "ThemeSmith Agent"
+          git config user.email "agent@themesmith.dev"
+          git add .
+          git commit -m "🤖 Auto-agent: update app structure and code"
+          git push

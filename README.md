@@ -282,6 +282,20 @@ Built with 🔥 by developers who love clean design.
 
 ```
 
+## 🤖 Autonomous AI Builder
 
-Just say the word — ThemeSmith is one step from launch.
-```
+This repo supports AI-powered prototyping using a continuous agent loop.
+
+To activate the auto-agent:
+
+1. Open `agent_full_build_prompt.txt`
+2. Run this prompt in your Codex environment or GPT-4 agent
+3. The agent will:
+   - Build the app from scratch
+   - Debug and test automatically
+   - Push major updates to GitHub
+
+### 🔁 GitHub Action
+
+An optional GitHub Action is included in `.github/workflows/auto-agent.yml` for continuous builds triggered by commits to the `dev-autogen` branch.
+
