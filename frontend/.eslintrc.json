@@ -1,0 +1,27 @@
+{
+  "env": { "browser": true, "es2022": true, "node": false },
+  "extends": ["airbnb", "next/core-web-vitals"],
+  "parserOptions": { "ecmaVersion": 2022, "sourceType": "module", "ecmaFeatures": { "jsx": true } },
+  "settings": {
+    "import/resolver": {
+      "node": { "extensions": [".js", ".jsx"] }
+    }
+  },
+  "rules": {
+    "max-len": ["error", { "code": 100 }],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }],
+    "object-curly-newline": "off",
+    "import/extensions": ["error", "ignorePackages", { "js": "never", "jsx": "never" }]
+  },
+  "overrides": [
+    {
+      "files": ["next.config.js"],
+      "env": { "node": true },
+      "rules": { "no-undef": "off" }
+    }
+  ]
+}
