@@ -14,7 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - name: Install API deps
+      - name: Install root dev deps
+        run: |
+          npm ci
+      - name: Lint API
         run: |
           cd api
           npm ci
@@ -24,4 +27,14 @@ jobs:
           cd frontend
           npm ci
           npm run build --if-present
-
+      - name: Build theme from spec and validate
+        run: |
+          node -e "(async()=>{const {buildThemeFromSpec}=await import('./core/theme-builder.js');const fs=await import('fs/promises');const path=(await import('path')).default;const spec=JSON.parse(await fs.readFile('themeSpec.json','utf8'));const themePath=await buildThemeFromSpec(spec);console.log('Built theme at',themePath);process.exit(0)})()"
+          npx gscan ./output/*
+      - name: Upload theme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: themesmith-output
+          path: |
+            output/*.zip
+            output/*-report.md

@@ -11,7 +11,8 @@
     "release:major": "standard-version --release-as major",
     "format": "npm --prefix frontend run format",
     "lint:api": "npm --prefix api run lint",
-    "validate:ghost": "npx gscan"
+    "validate:ghost": "npx gscan",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "conventional-changelog-cli": "^4.1.0",
