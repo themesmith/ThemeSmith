@@ -2,6 +2,7 @@
 # setup-dev.sh — ThemeSmith universal dev setup script
 
 set -e
+set -x  # <--- Enable script tracing
 
 echo ""
 echo "🛠  Setting up ThemeSmith development environment..."
