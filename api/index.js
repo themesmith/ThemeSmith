@@ -1,16 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import fs from 'fs/promises';
-import { exec } from 'child_process';
-import { fileURLToPath } from 'url';
 import buildTheme from './routes/generate.js';
 import validateTheme from './middleware/validate.js';
 import zipTheme from './middleware/zip.js';
 import respondTheme from './middleware/respond.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';

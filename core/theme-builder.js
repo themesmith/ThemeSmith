@@ -42,6 +42,8 @@ export const buildThemeFromSpec = async (spec) => {
     name: slug,
     version: '0.1.0',
     engines: { ghost: '>=5.0.0' },
+    author: { name: 'ThemeSmith', email: 'demo@themesmith.dev' },
+    keywords: ['ghost-theme'],
     config: { posts_per_page: 5 }
   };
 
@@ -51,6 +53,9 @@ export const buildThemeFromSpec = async (spec) => {
   --color-accent: ${spec.colors.accent};
   --color-bg: ${spec.colors.background};
   --color-text: ${spec.colors.text};
+  /* Ghost custom fonts support */
+  --gh-font-heading: ${spec?.fonts?.heading || 'system-ui, sans-serif'};
+  --gh-font-body: ${spec?.fonts?.body || 'system-ui, sans-serif'};
 }
 body { margin: 0; font-family: ${spec?.fonts?.body || 'system-ui, sans-serif'}; background: var(--color-bg); color: var(--color-text); }
 a { color: var(--color-accent); text-decoration: none; }
@@ -70,6 +75,7 @@ header, footer { padding: 16px; }
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{meta_title}}</title>
+    {{ghost_head}}
     <link rel="stylesheet" href="assets/css/screen.css" />
   </head>
   <body>
@@ -77,6 +83,7 @@ header, footer { padding: 16px; }
     <main class="container">{{{body}}}</main>
     {{> "footer"}}
     <script src="assets/js/main.js"></script>
+    {{ghost_foot}}
   </body>
   </html>`;
 
@@ -122,20 +129,26 @@ header, footer { padding: 16px; }
 </article>`;
 
   const pageHbs = `{{!< default}}
-<article>
-  {{#if feature_image}}
-    <figure>
-      <img src="{{feature_image}}" alt="{{title}}" />
-    </figure>
-  {{/if}}
-  <h1>{{title}}</h1>
-  {{#if custom_excerpt}}
-    <p><em>{{custom_excerpt}}</em></p>
-  {{/if}}
-  <section>
-    {{content}}
-  </section>
-</article>`;
+{{#post}}
+  <article {{post_class}}>
+    {{#if @page.show_title_and_feature_image}}
+      {{#if feature_image}}
+        <figure>
+          <img src="{{feature_image}}" alt="{{title}}" />
+        </figure>
+      {{/if}}
+      <h1>{{title}}</h1>
+    {{else}}
+      <h1 class="sr-only">{{title}}</h1>
+    {{/if}}
+    {{#if custom_excerpt}}
+      <p><em>{{custom_excerpt}}</em></p>
+    {{/if}}
+    <section>
+      {{content}}
+    </section>
+  </article>
+{{/post}}`;
 
   const tagHbs = `{{!< default}}
 <section>
@@ -158,9 +171,15 @@ header, footer { padding: 16px; }
   const authorHbs = `{{!< default}}
 <section>
   <header>
-    <h1>{{author.name}}</h1>
-    {{#if author.bio}}
-      <p>{{author.bio}}</p>
+    {{#if posts}}
+      {{#with posts.[0]}}
+        <h1>{{primary_author.name}}</h1>
+        {{#if primary_author.bio}}
+          <p>{{primary_author.bio}}</p>
+        {{/if}}
+      {{/with}}
+    {{else}}
+      <h1>Author</h1>
     {{/if}}
   </header>
   <div class="${'grid'}">
@@ -195,7 +214,12 @@ This theme was generated from a structured themeSpec.json. Assets use relative l
   await fs.writeFile(path.join(themePath, 'author.hbs'), `${authorHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'partials', 'header.hbs'), `${headerHbs}\n`, 'utf8');
   await fs.writeFile(path.join(themePath, 'partials', 'footer.hbs'), `${footerHbs}\n`, 'utf8');
-  await fs.writeFile(path.join(themePath, 'assets', 'css', 'screen.css'), `${css}\n`, 'utf8');
+  // Extend CSS with Ghost-required classes to satisfy validator
+  const ghostRequiredCss = `
+.kg-width-wide { max-width: 1200px; margin-left: auto; margin-right: auto; }
+.kg-width-full { width: 100vw; margin-left: 50%; transform: translateX(-50%); }
+`;
+  await fs.writeFile(path.join(themePath, 'assets', 'css', 'screen.css'), `${css}\n${ghostRequiredCss}\n`, 'utf8');
   const mainJs = (() => {
     const lines = [
       "document.addEventListener('DOMContentLoaded',()=>{",

@@ -3,13 +3,30 @@ import path from 'path';
 
 const respondTheme = async (req, res) => {
   try {
-    const { spec, themePath, validatorSummary, validatorError, zipPath } = res.locals;
+    const {
+      spec,
+      themePath,
+      validatorSummary,
+      validatorError,
+      zipPath,
+    } = res.locals;
     const slug = res.locals.slug || path.basename(themePath);
     const outRoot = path.resolve('output');
     const reportPath = path.join(outRoot, `${slug}-report.md`);
-
-    const report = `# ThemeSmith Report\n\n- Theme: ${spec?.projectName} (${slug})\n- Platform: ${spec?.platform}\n- Output: ${themePath}\n- Zip: ${zipPath}\n\n## Validator Output (gscan)\n\n\n${validatorSummary || ''}\n`;
-    await fs.writeFile(reportPath, `${report}\n`, 'utf8');
+    const reportLines = [
+      '# ThemeSmith Report',
+      '',
+      `- Theme: ${spec?.projectName} (${slug})`,
+      `- Platform: ${spec?.platform}`,
+      `- Output: ${themePath}`,
+      `- Zip: ${zipPath}`,
+      '',
+      '## Validator Output (gscan)',
+      '',
+      validatorSummary || '',
+      '',
+    ];
+    await fs.writeFile(reportPath, `${reportLines.join('\n')}\n`, 'utf8');
 
     const body = {
       download: `/output/${slug}.zip`,
@@ -27,4 +44,3 @@ const respondTheme = async (req, res) => {
 };
 
 export default respondTheme;
-

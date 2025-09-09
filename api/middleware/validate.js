@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const validateTheme = async (req, res, next) => {
-  const themePath = res.locals.themePath;
+  const { themePath } = res.locals;
   if (!themePath) return res.status(500).json({ error: 'Missing themePath for validation' });
 
   // Prefer executing the local gscan CLI via the current Node binary to avoid PATH issues
@@ -23,6 +23,7 @@ const validateTheme = async (req, res, next) => {
   } catch (e) {
     return res.status(500).json({ error: 'Failed to run gscan', details: e.message });
   }
+  return undefined;
 };
 
 export default validateTheme;

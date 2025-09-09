@@ -4,11 +4,12 @@ import fs from 'fs';
 
 const zipTheme = async (req, res, next) => {
   try {
-    const themePath = res.locals.themePath;
+    const { themePath } = res.locals;
     if (!themePath) return res.status(500).json({ error: 'Missing themePath for zipping' });
 
     const outRoot = path.resolve('output');
-    const slug = res.locals.slug || path.basename(themePath);
+    const { slug: maybeSlug } = res.locals;
+    const slug = maybeSlug || path.basename(themePath);
     const zipPath = path.join(outRoot, `${slug}.zip`);
 
     await new Promise((resolve, reject) => {
