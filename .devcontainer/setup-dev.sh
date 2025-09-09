@@ -2,6 +2,7 @@
 # setup-dev.sh — ThemeSmith universal dev setup script
 
 set -e
+set -x  # <--- Enable script tracing
 
 echo ""
 echo "🛠  Setting up ThemeSmith development environment..."
@@ -54,6 +55,8 @@ fi
 
 # 8. Optional: Setup .env if it doesn't exist
 
+: "${OPENAI_API_KEY:=sk-demo-placeholder}"
+export OPENAI_API_KEY
 
 
 if [ ! -f ".env" ]; then
