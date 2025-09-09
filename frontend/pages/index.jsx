@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SiteHeader from '../components/site-header';
 
 export default function ThemeBuilder() {
   const [spec, setSpec] = useState({ projectName: 'Clean Grid Blog', platform: 'ghost' });
@@ -8,7 +9,7 @@ export default function ThemeBuilder() {
   const handleSubmit = async () => {
     setStatus('Building…');
     try {
-      const res = await fetch('http://localhost:4000/generate-theme', {
+      const res = await fetch('/api/generate-theme', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(spec),
@@ -24,7 +25,9 @@ export default function ThemeBuilder() {
   };
 
   return (
-    <div style={{ padding: 24, maxWidth: 720, margin: '0 auto' }}>
+    <div>
+      <SiteHeader />
+      <div style={{ padding: 24, maxWidth: 720, margin: '0 auto' }}>
       <h1 style={{ fontWeight: 700, fontSize: 28, marginBottom: 12 }}>AI Theme Generator</h1>
 
       <input
@@ -54,7 +57,7 @@ export default function ThemeBuilder() {
           Download Theme
         </a>
       )}
+      </div>
     </div>
   );
 }
-
