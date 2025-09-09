@@ -9,6 +9,7 @@ echo "🛠  Setting up ThemeSmith development environment..."
 echo ""
 
 echo "OPENAI_API_KEY=sk-xxxxx" > .env
+[ -f .env ] && export $(grep -v '^#' .env | xargs)
 
 
 # 1. Ensure Node.js is installed
