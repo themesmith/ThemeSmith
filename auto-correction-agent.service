@@ -1,0 +1,16 @@
+[Unit]
+Description=ThemeSmith Auto-Correction Agent
+After=network.target
+Requires=lint-agent.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/ThemeSmith
+ExecStart=/usr/bin/node /root/ThemeSmith/auto_correction_agent.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=development
+
+[Install]
+WantedBy=multi-user.target

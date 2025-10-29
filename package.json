@@ -16,8 +16,13 @@
     "release:major": "standard-version --release-as major",
     "format": "npm --prefix frontend run format",
     "lint:api": "npm --prefix api run lint",
+    "lint:fix:api": "npm --prefix api run lint:fix",
     "lint:agent": "node lint_agent.js",
     "lint:agent:start": "node lint_agent.js",
+    "auto:fix": "node auto_correction_agent.js",
+    "auto:fix:start": "node auto_correction_agent.js",
+    "agents": "node combined_agent.js",
+    "agents:start": "node combined_agent.js",
     "validate:ghost": "npx gscan",
     "prepare": "husky install"
   },

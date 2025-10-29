@@ -106,7 +106,13 @@ It combines:
    ```
    This will automatically lint files when you save them
 
-4. **Generate your first theme:**
+4. **Start the Auto-Correction Agent** (optional, in a fourth terminal):
+   ```bash
+   npm run auto:fix
+   ```
+   This will automatically fix linting errors and commit changes
+
+5. **Generate your first theme:**
    - Open `http://localhost:3000` in your browser
    - Fill out the theme specification form (project name, layout, colors, fonts, features)
    - Click "Generate Theme"
@@ -148,6 +154,40 @@ sudo systemctl status lint-agent
 ```
 
 The agent watches all relevant source files and runs appropriate lint commands based on file location. See [docs/lint-agent.md](docs/lint-agent.md) for detailed documentation.
+
+### Auto-Correction Agent
+
+The Auto-Correction Agent automatically fixes linting errors and commits the changes:
+
+```bash
+# Start the auto-correction agent
+npm run auto:fix
+
+# Stop with Ctrl+C
+```
+
+For production environments, you can install it as a systemd service:
+
+```bash
+# Copy service file
+sudo cp auto-correction-agent.service /etc/systemd/system/
+
+# Enable and start the service
+sudo systemctl enable auto-correction-agent
+sudo systemctl start auto-correction-agent
+
+# Check status
+sudo systemctl status auto-correction-agent
+```
+
+The auto-correction agent:
+- 🔧 Automatically fixes ESLint errors with `--fix` flag
+- 📝 Commits fixes with descriptive messages
+- ⏱️ Rate limits commits to prevent spam (10/hour by default)
+- 🛡️ Includes safety features like dry-run mode
+- 🎯 Only processes files that actually have linting errors
+
+See [docs/auto-correction-agent.md](docs/auto-correction-agent.md) for detailed documentation.
 
 ---
 
