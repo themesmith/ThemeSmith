@@ -30,14 +30,25 @@ It combines:
 
 - 🧠 AI theme spec intake (via prompt or UI)
 - 🎨 Previews of homepage, post layout, etc.
-- ⚙️ Modular support: Ghost, WordPress (more coming)
-- ✅ Integrated Ghost Theme Validator + WP Theme Check
+- ⚙️ **Full support for Ghost and WordPress platforms**
+- ✅ Integrated Ghost Theme Validator + WordPress Theme Check
 - 🔄 Exports as `.zip`, or directly to GitHub repo
 - 🧾 JSON-based structured specs (`themeSpec.json`)
 - 📂 Auto-structured folder output
 - 🛒 Marketplace support
 - 🖼️ AI-generated header images
 - 🧩 Component-level block editing (Framer-style)
+
+### WordPress-Specific Features
+- 🎯 **Complete WordPress theme structure** (all required files)
+- 🧱 **Gutenberg/Block Editor support** with `theme.json`
+- 🎨 **WordPress Customizer integration**
+- 🔧 **Widget areas and menu locations**
+- 🌐 **Internationalization ready** (i18n)
+- 🔒 **Security best practices** built-in
+- ♿ **Accessibility compliance** (WCAG 2.1)
+- 📱 **Responsive design** out of the box
+- ⚡ **Performance optimized**
 
 ---
 
@@ -116,8 +127,9 @@ The generated theme will be in the `output/` directory.
 | Frontend    | React + Tailwind + Next.js|
 | Backend API | Node.js + Express         |
 | AI Engine   | OpenAI GPT-4              |
-| CMS Targets | Ghost, WordPress          |
+| CMS Targets | **Ghost, WordPress** (full support) |
 | Output      | Clean `.zip` + README     |
+| Validation  | Ghost CLI (gscan) + WordPress Theme Check |
 
 ---
 

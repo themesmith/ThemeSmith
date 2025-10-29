@@ -8,6 +8,7 @@ const defaultSpec = {
     homepage: "grid",
     postPage: "single-column",
     tagPage: "minimal",
+    archivePage: "grid", // WordPress specific
   },
   colors: {
     primary: "#1a1a1a",
@@ -81,7 +82,7 @@ export default function ThemeBuilder() {
       <div style={{ padding: 24, maxWidth: 720, margin: "0 auto" }}>
         <h1 style={{ fontWeight: 700, fontSize: 28, marginBottom: 12 }}>ThemeSmith Generator</h1>
         <p style={{ color: "#666", marginBottom: 24 }}>
-          Create a production-ready Ghost theme from a simple specification.
+          Create a production-ready {spec.platform === "wordpress" ? "WordPress" : "Ghost"} theme from a simple specification.
         </p>
 
         <div>
@@ -94,6 +95,32 @@ export default function ThemeBuilder() {
             style={inputStyle}
             required
           />
+        </div>
+
+        <div>
+          <label style={labelStyle}>Platform *</label>
+          <select
+            value={spec.platform || "ghost"}
+            onChange={(e) => {
+              const platform = e.target.value;
+              const newLayout = { ...spec.layout };
+              
+              // Update layout keys based on platform
+              if (platform === "wordpress") {
+                newLayout.archivePage = newLayout.tagPage || "grid";
+                delete newLayout.tagPage;
+              } else if (platform === "ghost") {
+                newLayout.tagPage = newLayout.archivePage || "minimal";
+                delete newLayout.archivePage;
+              }
+              
+              setSpec({ ...spec, platform, layout: newLayout });
+            }}
+            style={inputStyle}
+          >
+            <option value="ghost">Ghost</option>
+            <option value="wordpress">WordPress</option>
+          </select>
         </div>
 
         <div style={sectionStyle}>
@@ -120,16 +147,33 @@ export default function ThemeBuilder() {
             <option value="minimal">Minimal</option>
           </select>
 
-          <label style={labelStyle}>Tag Page</label>
-          <select
-            value={spec.layout?.tagPage || "minimal"}
-            onChange={(e) => updateSpec("layout.tagPage", e.target.value)}
-            style={inputStyle}
-          >
-            <option value="minimal">Minimal</option>
-            <option value="grid">Grid</option>
-            <option value="list">List</option>
-          </select>
+          {spec.platform === "ghost" ? (
+            <>
+              <label style={labelStyle}>Tag Page</label>
+              <select
+                value={spec.layout?.tagPage || "minimal"}
+                onChange={(e) => updateSpec("layout.tagPage", e.target.value)}
+                style={inputStyle}
+              >
+                <option value="minimal">Minimal</option>
+                <option value="grid">Grid</option>
+                <option value="list">List</option>
+              </select>
+            </>
+          ) : (
+            <>
+              <label style={labelStyle}>Archive Page</label>
+              <select
+                value={spec.layout?.archivePage || "grid"}
+                onChange={(e) => updateSpec("layout.archivePage", e.target.value)}
+                style={inputStyle}
+              >
+                <option value="grid">Grid</option>
+                <option value="list">List</option>
+                <option value="minimal">Minimal</option>
+              </select>
+            </>
+          )}
         </div>
 
         <div style={sectionStyle}>
@@ -190,17 +234,35 @@ export default function ThemeBuilder() {
 
         <div style={sectionStyle}>
           <h2 style={{ fontSize: 20, marginBottom: 12 }}>Features</h2>
-          {["dark_mode", "newsletter_signup", "search", "featured_posts"].map((feature) => (
-            <label key={feature} style={{ display: "block", marginTop: 8, cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={(spec.features || []).includes(feature)}
-                onChange={() => toggleFeature(feature)}
-                style={{ marginRight: 8 }}
-              />
-              {feature.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-            </label>
-          ))}
+          {spec.platform === "wordpress" ? (
+            <>
+              {["gutenberg_blocks", "customizer", "widgets", "menus", "dark_mode", "responsive"].map((feature) => (
+                <label key={feature} style={{ display: "block", marginTop: 8, cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={(spec.features || []).includes(feature)}
+                    onChange={() => toggleFeature(feature)}
+                    style={{ marginRight: 8 }}
+                  />
+                  {feature.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                </label>
+              ))}
+            </>
+          ) : (
+            <>
+              {["dark_mode", "newsletter_signup", "search", "featured_posts"].map((feature) => (
+                <label key={feature} style={{ display: "block", marginTop: 8, cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={(spec.features || []).includes(feature)}
+                    onChange={() => toggleFeature(feature)}
+                    style={{ marginRight: 8 }}
+                  />
+                  {feature.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                </label>
+              ))}
+            </>
+          )}
         </div>
 
         <button

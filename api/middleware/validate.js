@@ -1,12 +1,18 @@
 import { exec } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import validateWordPressTheme from '../../platforms/wordpress/validators/theme-check.js';
 
 const validateTheme = async (req, res, next) => {
-  const { themePath } = res.locals;
+  const { themePath, spec } = res.locals;
   if (!themePath) return res.status(500).json({ error: 'Missing themePath for validation' });
 
-  // Prefer executing the local gscan CLI via the current Node binary to avoid PATH issues
+  // Route to appropriate validator based on platform
+  if (spec?.platform === 'wordpress') {
+    return validateWordPressTheme(req, res, next);
+  }
+
+  // Default to Ghost validation (existing code)
   try {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);

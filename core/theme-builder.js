@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { buildWordPressThemeFromSpec } from '../platforms/wordpress/builders/theme-builder.js';
 
 const ensureDir = async (dir) => fs.mkdir(dir, { recursive: true });
 
@@ -13,13 +14,20 @@ const validateSpec = (spec) => {
   for (const key of required) {
     if (!spec[key]) throw new Error(`Missing required field: ${key}`);
   }
-  if (spec.platform !== 'ghost') {
-    throw new Error('Only platform "ghost" is supported in this build');
+  
+  // Support both Ghost and WordPress platforms
+  if (!['ghost', 'wordpress'].includes(spec.platform)) {
+    throw new Error(`Platform "${spec.platform}" is not supported. Supported platforms: ghost, wordpress`);
   }
-  const layoutKeys = ['homepage', 'postPage', 'tagPage'];
+  
+  const layoutKeys = spec.platform === 'ghost' 
+    ? ['homepage', 'postPage', 'tagPage']
+    : ['homepage', 'postPage', 'archivePage'];
+    
   for (const k of layoutKeys) {
     if (!spec.layout[k]) throw new Error(`Missing layout.${k}`);
   }
+  
   const colorKeys = ['primary', 'accent', 'background', 'text'];
   for (const k of colorKeys) {
     if (!spec.colors[k]) throw new Error(`Missing colors.${k}`);
@@ -28,6 +36,17 @@ const validateSpec = (spec) => {
 
 export const buildThemeFromSpec = async (spec) => {
   validateSpec(spec);
+  
+  // Route to appropriate platform builder
+  if (spec.platform === 'wordpress') {
+    return await buildWordPressThemeFromSpec(spec);
+  }
+  
+  // Default to Ghost theme builder (existing code)
+  return await buildGhostThemeFromSpec(spec);
+};
+
+const buildGhostThemeFromSpec = async (spec) => {
   const slug = slugify(spec.projectName || 'theme');
   const outRoot = path.resolve('output');
   const themePath = path.join(outRoot, slug);
