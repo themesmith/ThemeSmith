@@ -1,0 +1,15 @@
+[Unit]
+Description=ThemeSmith Performance Agent
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/ThemeSmith
+ExecStart=/usr/bin/node /root/ThemeSmith/performance_agent.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=development
+
+[Install]
+WantedBy=multi-user.target

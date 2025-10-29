@@ -17,6 +17,16 @@
     "docs:agent:start": "node documentation_agent.js",
     "security:agent": "node security_agent.js",
     "security:agent:start": "node security_agent.js",
+    "performance:agent": "node performance_agent.js",
+    "performance:agent:start": "node performance_agent.js",
+    "validation:agent": "node validation_agent.js",
+    "validation:agent:start": "node validation_agent.js",
+    "complexity:agent": "node complexity_agent.js",
+    "complexity:agent:start": "node complexity_agent.js",
+    "backup:agent": "node backup_agent.js",
+    "backup:agent:start": "node backup_agent.js",
+    "changelog:agent": "node changelog_agent.js",
+    "changelog:agent:start": "node changelog_agent.js",
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
@@ -47,8 +57,10 @@
     "jest": "^30.2.0",
     "jsdoc": "^4.0.5",
     "lint-staged": "^15.2.10",
+    "perf_hooks": "^0.0.1",
     "standard-version": "^9.5.0",
-    "supertest": "^7.1.4"
+    "supertest": "^7.1.4",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "lint-staged": {
     "api/**/*.js": [
