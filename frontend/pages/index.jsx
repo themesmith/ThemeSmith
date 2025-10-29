@@ -82,12 +82,17 @@ export default function ThemeBuilder() {
       <div style={{ padding: 24, maxWidth: 720, margin: "0 auto" }}>
         <h1 style={{ fontWeight: 700, fontSize: 28, marginBottom: 12 }}>ThemeSmith Generator</h1>
         <p style={{ color: "#666", marginBottom: 24 }}>
-          Create a production-ready {spec.platform === "wordpress" ? "WordPress" : "Ghost"} theme from a simple specification.
+          Create a production-ready
+          {" "}
+          {spec.platform === "wordpress" ? "WordPress" : "Ghost"}
+          {" "}
+          theme from a simple specification.
         </p>
 
         <div>
-          <label style={labelStyle}>Project Name *</label>
+          <label htmlFor="projectName" style={labelStyle}>Project Name *</label>
           <input
+            id="projectName"
             type="text"
             placeholder="Clean Grid Blog"
             value={spec.projectName || ""}
@@ -98,13 +103,14 @@ export default function ThemeBuilder() {
         </div>
 
         <div>
-          <label style={labelStyle}>Platform *</label>
+          <label htmlFor="platform" style={labelStyle}>Platform *</label>
           <select
+            id="platform"
             value={spec.platform || "ghost"}
             onChange={(e) => {
               const platform = e.target.value;
               const newLayout = { ...spec.layout };
-              
+
               // Update layout keys based on platform
               if (platform === "wordpress") {
                 newLayout.archivePage = newLayout.tagPage || "grid";
@@ -113,7 +119,7 @@ export default function ThemeBuilder() {
                 newLayout.tagPage = newLayout.archivePage || "minimal";
                 delete newLayout.archivePage;
               }
-              
+
               setSpec({ ...spec, platform, layout: newLayout });
             }}
             style={inputStyle}
@@ -125,8 +131,9 @@ export default function ThemeBuilder() {
 
         <div style={sectionStyle}>
           <h2 style={{ fontSize: 20, marginBottom: 12 }}>Layout</h2>
-          <label style={labelStyle}>Homepage</label>
+          <label htmlFor="homepage" style={labelStyle}>Homepage</label>
           <select
+            id="homepage"
             value={spec.layout?.homepage || "grid"}
             onChange={(e) => updateSpec("layout.homepage", e.target.value)}
             style={inputStyle}
@@ -136,8 +143,9 @@ export default function ThemeBuilder() {
             <option value="minimal">Minimal</option>
           </select>
 
-          <label style={labelStyle}>Post Page</label>
+          <label htmlFor="postPage" style={labelStyle}>Post Page</label>
           <select
+            id="postPage"
             value={spec.layout?.postPage || "single-column"}
             onChange={(e) => updateSpec("layout.postPage", e.target.value)}
             style={inputStyle}
@@ -149,8 +157,9 @@ export default function ThemeBuilder() {
 
           {spec.platform === "ghost" ? (
             <>
-              <label style={labelStyle}>Tag Page</label>
+              <label htmlFor="tagPage" style={labelStyle}>Tag Page</label>
               <select
+                id="tagPage"
                 value={spec.layout?.tagPage || "minimal"}
                 onChange={(e) => updateSpec("layout.tagPage", e.target.value)}
                 style={inputStyle}
@@ -162,8 +171,9 @@ export default function ThemeBuilder() {
             </>
           ) : (
             <>
-              <label style={labelStyle}>Archive Page</label>
+              <label htmlFor="archivePage" style={labelStyle}>Archive Page</label>
               <select
+                id="archivePage"
                 value={spec.layout?.archivePage || "grid"}
                 onChange={(e) => updateSpec("layout.archivePage", e.target.value)}
                 style={inputStyle}
@@ -178,32 +188,36 @@ export default function ThemeBuilder() {
 
         <div style={sectionStyle}>
           <h2 style={{ fontSize: 20, marginBottom: 12 }}>Colors</h2>
-          <label style={labelStyle}>Primary</label>
+          <label htmlFor="primaryColor" style={labelStyle}>Primary</label>
           <input
+            id="primaryColor"
             type="color"
             value={spec.colors?.primary || "#1a1a1a"}
             onChange={(e) => updateSpec("colors.primary", e.target.value)}
             style={{ ...inputStyle, height: 40 }}
           />
 
-          <label style={labelStyle}>Accent</label>
+          <label htmlFor="accentColor" style={labelStyle}>Accent</label>
           <input
+            id="accentColor"
             type="color"
             value={spec.colors?.accent || "#ff5722"}
             onChange={(e) => updateSpec("colors.accent", e.target.value)}
             style={{ ...inputStyle, height: 40 }}
           />
 
-          <label style={labelStyle}>Background</label>
+          <label htmlFor="backgroundColor" style={labelStyle}>Background</label>
           <input
+            id="backgroundColor"
             type="color"
             value={spec.colors?.background || "#ffffff"}
             onChange={(e) => updateSpec("colors.background", e.target.value)}
             style={{ ...inputStyle, height: 40 }}
           />
 
-          <label style={labelStyle}>Text</label>
+          <label htmlFor="textColor" style={labelStyle}>Text</label>
           <input
+            id="textColor"
             type="color"
             value={spec.colors?.text || "#333333"}
             onChange={(e) => updateSpec("colors.text", e.target.value)}
@@ -213,8 +227,9 @@ export default function ThemeBuilder() {
 
         <div style={sectionStyle}>
           <h2 style={{ fontSize: 20, marginBottom: 12 }}>Fonts</h2>
-          <label style={labelStyle}>Heading Font</label>
+          <label htmlFor="headingFont" style={labelStyle}>Heading Font</label>
           <input
+            id="headingFont"
             type="text"
             placeholder="Inter"
             value={spec.fonts?.heading || ""}
@@ -222,8 +237,9 @@ export default function ThemeBuilder() {
             style={inputStyle}
           />
 
-          <label style={labelStyle}>Body Font</label>
+          <label htmlFor="bodyFont" style={labelStyle}>Body Font</label>
           <input
+            id="bodyFont"
             type="text"
             placeholder="Open Sans"
             value={spec.fonts?.body || ""}

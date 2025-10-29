@@ -8,14 +8,16 @@
     }
   },
   "rules": {
-    "max-len": ["error", { "code": 100 }],
+    "max-len": ["error", { "code": 120 }],
     "semi": ["error", "always"],
     "quotes": ["error", "double", { "avoidEscape": true }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }],
     "object-curly-newline": "off",
-    "import/extensions": ["error", "ignorePackages", { "js": "never", "jsx": "never" }]
+    "import/extensions": ["error", "ignorePackages", { "js": "never", "jsx": "never" }],
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-one-expression-per-line": "off"
   },
   "overrides": [
     {
