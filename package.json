@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "test": "echo \"No tests yet\" && exit 0",
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",

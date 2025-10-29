@@ -41,6 +41,74 @@ It combines:
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- Git
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/themesmith/themesmith.git
+   cd themesmith
+   ```
+
+2. **Install root dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Install API dependencies:**
+   ```bash
+   cd api
+   npm install
+   cd ..
+   ```
+
+4. **Install frontend dependencies:**
+   ```bash
+   cd frontend
+   npm install
+   cd ..
+   ```
+
+### Running Locally
+
+1. **Start the API server** (in one terminal):
+   ```bash
+   cd api
+   npm run dev
+   ```
+   The API will run on `http://localhost:4000`
+
+2. **Start the frontend** (in another terminal):
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+   The UI will be available at `http://localhost:3000`
+
+3. **Generate your first theme:**
+   - Open `http://localhost:3000` in your browser
+   - Fill out the theme specification form (project name, layout, colors, fonts, features)
+   - Click "Generate Theme"
+   - Download the generated `.zip` file from the `/output` directory
+
+### Using the CLI
+
+You can also generate themes from a `themeSpec.json` file:
+
+```bash
+node scripts/build-theme.mjs
+```
+
+The generated theme will be in the `output/` directory.
+
+---
+
 ## 📦 Tech Stack
 
 | Layer       | Tools                     |
@@ -63,14 +131,13 @@ themesmith/
 ├── frontend/
 │   └── pages/index.jsx
 ├── gpt/
-│   ├── user\_agent\_prompt.txt
-│   └── code\_agent\_prompt.txt
+│   ├── user_agent_prompt.txt
+│   └── code_agent_prompt.txt
 ├── themeSpec.json
 ├── .gitignore
 ├── LICENSE
 └── README.md
-
-````
+```
 
 ---
 
@@ -115,7 +182,7 @@ themesmith/
     "https://vercel.com"
   ]
 }
-````
+```
 
 ---
 
@@ -253,6 +320,38 @@ export default function ThemeBuilder() {
 
 ---
 
+## 🧪 Development
+
+### Running Tests
+
+```bash
+# Lint API code
+npm run lint:api
+
+# Lint frontend code
+cd frontend && npm run lint
+
+# Build frontend
+cd frontend && npm run build
+```
+
+### Theme Validation
+
+Validate a generated Ghost theme:
+
+```bash
+npx gscan ./output/your-theme-name
+```
+
+### Project Scripts
+
+- `npm run lint:api` - Lint the API code
+- `npm run format` - Format frontend code
+- `npm run changelog` - Generate changelog
+- `npm run release` - Create a new release
+
+---
+
 ## 🤝 Contributing
 
 We welcome:
@@ -261,6 +360,8 @@ We welcome:
 * UI/UX designers
 * Prompt engineers
 * Testers and early adopters
+
+See [AGENTS.md](./AGENTS.md) for development guidelines and workflow.
 
 ---
 
@@ -279,8 +380,6 @@ MIT — see [LICENSE](./LICENSE)
 ---
 
 Built with 🔥 by developers who love clean design.
-
-```
 
 ## 🤖 Autonomous AI Builder
 
