@@ -8,7 +8,11 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "test": "echo \"No tests yet\" && exit 0",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:agent": "node test_agent.js",
+    "test:agent:start": "node test_agent.js",
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
@@ -27,12 +31,17 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "chokidar": "^4.0.3",
     "conventional-changelog-cli": "^4.1.0",
     "gscan": "^5.1.0",
     "husky": "^9.1.6",
+    "jest": "^30.2.0",
     "lint-staged": "^15.2.10",
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "supertest": "^7.1.4"
   },
   "lint-staged": {
     "api/**/*.js": [
