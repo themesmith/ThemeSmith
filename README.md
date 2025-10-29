@@ -90,19 +90,23 @@ It combines:
 
 1. **Start the API server** (in one terminal):
    ```bash
-   cd api
-   npm run dev
+   npm --prefix api start
    ```
-   The API will run on `http://localhost:4000`
+   The API will run on `http://localhost:3001`
 
 2. **Start the frontend** (in another terminal):
    ```bash
-   cd frontend
-   npm run dev
+   npm --prefix frontend dev
    ```
    The UI will be available at `http://localhost:3000`
 
-3. **Generate your first theme:**
+3. **Start the Lint Agent** (optional, in a third terminal):
+   ```bash
+   npm run lint:agent
+   ```
+   This will automatically lint files when you save them
+
+4. **Generate your first theme:**
    - Open `http://localhost:3000` in your browser
    - Fill out the theme specification form (project name, layout, colors, fonts, features)
    - Click "Generate Theme"
@@ -117,6 +121,33 @@ node scripts/build-theme.mjs
 ```
 
 The generated theme will be in the `output/` directory.
+
+### Lint Agent
+
+The Lint Agent automatically runs linting whenever files are saved:
+
+```bash
+# Start the lint agent
+npm run lint:agent
+
+# Stop with Ctrl+C
+```
+
+For production environments, you can install it as a systemd service:
+
+```bash
+# Copy service file
+sudo cp lint-agent.service /etc/systemd/system/
+
+# Enable and start the service
+sudo systemctl enable lint-agent
+sudo systemctl start lint-agent
+
+# Check status
+sudo systemctl status lint-agent
+```
+
+The agent watches all relevant source files and runs appropriate lint commands based on file location. See [docs/lint-agent.md](docs/lint-agent.md) for detailed documentation.
 
 ---
 
