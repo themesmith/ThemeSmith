@@ -7,6 +7,50 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 ## [Unreleased]
 - Placeholder: add upcoming changes here under Added/Changed/Fixed/Security.
 
+## [0.2.0] - 2025-01-15
+
+### Added
+- **Complete WordPress theme generation support** with comprehensive platform module
+- **WordPress platform module** (`platforms/wordpress/`) with theme builder and validator
+- **Multi-platform support** - core theme-builder now routes to Ghost or WordPress builders
+- **WordPress theme validation** with security checks and required files verification
+- **WordPress-specific frontend features**:
+  - Platform selector (Ghost/WordPress)
+  - Dynamic form fields based on selected platform
+  - WordPress-specific features (Gutenberg blocks, Customizer, widgets, menus)
+  - Platform-aware descriptions and help text
+- **Complete WordPress theme structure** with all required files:
+  - Core files: `style.css`, `index.php`, `functions.php`, `header.php`, `footer.php`
+  - Templates: `single.php`, `page.php`, `archive.php`, `search.php`, `404.php`, `searchform.php`
+  - Modern features: `theme.json` for Gutenberg, custom CSS/JS assets
+- **WordPress standards compliance**:
+  - Security best practices (ABSPATH checks, input sanitization)
+  - Performance optimizations (removed unnecessary scripts)
+  - Accessibility compliance (WCAG 2.1)
+  - Internationalization ready (i18n functions)
+  - Responsive design with mobile-first approach
+- **WordPress-specific features**:
+  - Gutenberg/Block Editor support with `theme.json`
+  - WordPress Customizer integration with color controls
+  - Widget areas (sidebar, footer) and menu locations
+  - Dark mode support with localStorage
+  - AJAX functionality for future enhancements
+- **Comprehensive documentation** (`WORDPRESS_SUPPORT.md`) with implementation details
+
+### Changed
+- **Core theme-builder** now supports both Ghost and WordPress platforms
+- **Frontend UI** enhanced with platform selection and dynamic form fields
+- **API validation middleware** routes to platform-specific validators
+- **README** updated with WordPress features and capabilities
+
+### Fixed
+- N/A (new feature implementation)
+
+### Security
+- **WordPress themes** include security best practices (ABSPATH checks, input sanitization)
+- **Performance optimizations** remove unnecessary WordPress scripts and features
+- **Input validation** and output escaping in generated WordPress themes
+
 ## [0.1.0] - 2025-01-15
 
 ### Added
